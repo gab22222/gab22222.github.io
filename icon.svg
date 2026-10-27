@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Logo « games » : quatre boutons de manette en losange, aux couleurs des joueurs, sur fond nuit -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="28%" r="85%">
+      <stop offset="0" stop-color="#2d2347"/>
+      <stop offset="1" stop-color="#12131f"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="36%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#fff" stop-opacity=".42"/>
+      <stop offset=".55" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <g>
+    <circle cx="512" cy="282" r="132" fill="#5cc8ba"/>
+    <circle cx="742" cy="512" r="132" fill="#f2914a"/>
+    <circle cx="512" cy="742" r="132" fill="#ef5a45"/>
+    <circle cx="282" cy="512" r="132" fill="#f0c030"/>
+  </g>
+  <g fill="url(#shine)">
+    <circle cx="512" cy="282" r="132"/>
+    <circle cx="742" cy="512" r="132"/>
+    <circle cx="512" cy="742" r="132"/>
+    <circle cx="282" cy="512" r="132"/>
+  </g>
+</svg>
