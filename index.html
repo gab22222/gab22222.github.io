@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nos jeux">
+<meta name="theme-color" content="#12131f">
+<title>Nos jeux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@700;800&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+/* Page d'accueil légère : une carte par jeu, chaque jeu vit sur sa propre page (rien n'est chargé ici). */
+:root{
+  --night:#12131f;
+  --sheet:rgba(28,24,40,.9);
+  --line:rgba(239,230,214,.16);
+  --bone:#efe6d6;
+  --mute:#aba1b5;
+  --ember:#f2914a;
+  --teal:#5cc8ba;
+  --display:"Alegreya SC", Georgia, "Times New Roman", serif;
+  --body:"Alegreya Sans", -apple-system, system-ui, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--night);color:var(--bone);font-family:var(--body)}
+body{
+  min-height:100svh;
+  padding:max(28px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+  background:radial-gradient(120% 70% at 50% 0%,#2a2140 0%,var(--night) 62%);
+  -webkit-tap-highlight-color:transparent;
+}
+main{width:min(560px,100%);margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);font-weight:700}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(38px,10vw,56px);line-height:.95;margin:6px 0 0;text-wrap:balance}
+.sub{color:var(--mute);font-size:16px;line-height:1.4;margin:0}
+.games{display:grid;gap:12px;margin-top:6px}
+.game{display:grid;grid-template-columns:84px 1fr;gap:14px;align-items:center;padding:14px;border-radius:16px;border:1px solid var(--line);background:var(--sheet);color:inherit;text-decoration:none;transition:transform .12s,border-color .12s}
+a.game:hover,a.game:focus-visible{border-color:rgba(242,145,74,.55)}
+a.game:active{transform:scale(.985)}
+a.game:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.art{width:84px;height:84px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(160deg,#3a2c52,#1b1a2b)}
+.art svg{width:64px;height:64px}
+.name{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.05}
+.desc{color:var(--mute);font-size:14px;line-height:1.35;margin-top:4px}
+.go{display:inline-flex;margin-top:8px;font-weight:700;font-size:14px;color:#24140a;background:var(--ember);padding:5px 12px;border-radius:999px}
+.game.soon{opacity:.55;border-style:dashed}
+.game.soon .art{background:rgba(239,230,214,.05)}
+.tag{display:inline-flex;margin-top:8px;font-weight:700;font-size:13px;color:var(--mute);border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+footer{color:var(--mute);font-size:13px;line-height:1.4;margin-top:6px}
+</style>
+</head>
+<body>
+<main>
+  <div>
+    <div class="eyebrow">À deux ou à trois, sur vos téléphones</div>
+    <h1>Nos jeux</h1>
+  </div>
+  <p class="sub">Choisis un jeu. Chacun s'ouvre sur sa propre page : rien d'autre ne tourne pendant que tu joues.</p>
+
+  <nav class="games" aria-label="Jeux">
+    <a class="game" href="/duel-arc/">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 8c16 8 16 40 0 48" stroke="#c89a5e" stroke-width="4"/>
+          <path d="M20 8v48" stroke="#efe6d6" stroke-width="1.5" opacity=".8"/>
+          <path d="M14 32h40" stroke="#efe6d6" stroke-width="2.5"/>
+          <path d="M54 32l-7-4.5v9z" fill="#efe6d6" stroke="none"/>
+          <path d="M14 32l-5-4M14 32l-5 4" stroke="#5cc8ba" stroke-width="3"/>
+        </svg>
+      </div>
+      <div>
+        <div class="name">Duel à l'Arc</div>
+        <div class="desc">Duel en 3D au canyon ou en forêt : arc, arbalète, carabine, batte ou pistolet. En ligne à 2 ou à 3, ou contre un bot.</div>
+        <span class="go">Jouer</span>
+      </div>
+    </a>
+
+    <div class="game soon" aria-disabled="true">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#aba1b5" stroke-width="3" stroke-linecap="round">
+          <path d="M32 18v28M18 32h28"/>
+        </svg>
+      </div>
+      <div>
+        <div class="name">Deuxième jeu</div>
+        <div class="desc">La place est prête pour le prochain jeu.</div>
+        <span class="tag">Bientôt</span>
+      </div>
+    </div>
+  </nav>
+
+  <footer>Astuce : sur iPhone, Partager puis « Sur l'écran d'accueil » pour ouvrir cette page comme une app.</footer>
+</main>
+</body>
+</html>
