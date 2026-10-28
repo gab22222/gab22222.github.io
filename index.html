@@ -58,6 +58,16 @@ a.game:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
 .game.soon .art{background:rgba(239,230,214,.05)}
 .tag{display:inline-flex;margin-top:8px;font-weight:700;font-size:13px;color:var(--mute);border:1px solid var(--line);padding:4px 10px;border-radius:999px}
 footer{color:var(--mute);font-size:13px;line-height:1.4;margin-top:6px}
+.pub{color:var(--mute);font-size:12px;margin-top:6px;opacity:.85}
+.pub:empty{display:none}
+.sync{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:4px}
+.sync button{font:700 15px/1 var(--body);padding:12px 18px;border-radius:999px;border:1px solid var(--line);background:rgba(239,230,214,.07);color:var(--bone);cursor:pointer;touch-action:manipulation;display:inline-flex;align-items:center;gap:8px}
+.sync button:disabled{opacity:.6;cursor:default}
+.sync button:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.sync svg{width:16px;height:16px}
+.sync button.busy svg{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#syncNote{color:var(--mute);font-size:13px;text-align:center;min-height:1.2em}
 </style>
 </head>
 <body>
@@ -84,6 +94,7 @@ footer{color:var(--mute);font-size:13px;line-height:1.4;margin-top:6px}
         <div class="name">Duel de tir</div>
         <div class="desc">Duel en 3D au canyon ou en forêt : arc, arbalète, carabine, batte ou pistolet. En ligne à 2 ou à 3, ou contre un bot.</div>
         <span class="go">Jouer</span>
+        <div class="pub" data-repo="duel-arc"></div>
       </div>
     </a>
 
@@ -102,10 +113,51 @@ footer{color:var(--mute);font-size:13px;line-height:1.4;margin-top:6px}
         <div class="name">Trottinette</div>
         <div class="desc">Balade en Dualtron Storm Limited sur une route de forêt, au milieu de la circulation. Wheelies, modes Eco et Turbo, 1 ou 2 moteurs.</div>
         <span class="go">Jouer</span>
+        <div class="pub" data-repo="trottinette"></div>
       </div>
     </a>
   </nav>
 
+  <div class="sync">
+    <button id="sync" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+      Synchroniser la dernière version
+    </button>
+    <div id="syncNote" role="status"></div>
+  </div>
 </main>
+<script>
+// GitHub Pages garde chaque page 10 min en mémoire (et l'iPhone encore plus en mode app) :
+// 1) « Jouer » ouvre toujours la toute dernière version du jeu (adresse unique à chaque ouverture)
+document.querySelectorAll('a.game').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  location.href = a.getAttribute('href') + '?v=' + Date.now();
+}));
+// 2) le bouton recharge depuis le serveur l'accueil et les jeux, puis relance la page
+const PAGES = ['/', '/duel-arc/', '/trottinette/', '/manifest.webmanifest', '/icon.svg', '/apple-touch-icon.png'];
+const btn = document.getElementById('sync'), note = document.getElementById('syncNote');
+btn.addEventListener('click', async () => {
+  btn.disabled = true; btn.classList.add('busy'); note.textContent = 'Récupération de la dernière version…';
+  try {
+    const res = await Promise.all(PAGES.map(u => fetch(u, { cache: 'reload' }).then(r => r.ok)));
+    if (!res.every(Boolean)) throw new Error('page');
+    note.textContent = 'À jour ✓';
+    setTimeout(() => location.replace('/?sync=' + Date.now()), 500);
+  } catch (e) {
+    note.textContent = 'Pas de connexion pour l’instant. Réessaie dans un moment.';
+    btn.disabled = false; btn.classList.remove('busy');
+  }
+});
+// 3) date de la dernière publication de chaque jeu (ce qui est en ligne en ce moment)
+const fmt = d => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) + ' à ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+document.querySelectorAll('.pub[data-repo]').forEach(async el => {
+  try {
+    const r = await fetch('https://api.github.com/repos/gab22222/' + el.dataset.repo + '/commits?per_page=1', { cache: 'no-store' });
+    if (!r.ok) return;
+    const [c] = await r.json();
+    if (c && c.commit) el.textContent = 'Dernière version : ' + fmt(new Date(c.commit.committer.date));
+  } catch (e) {}
+});
+</script>
 </body>
 </html>
