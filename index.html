@@ -116,6 +116,26 @@ footer{color:var(--mute);font-size:13px;line-height:1.4;margin-top:6px}
         <div class="pub" data-repo="trottinette"></div>
       </div>
     </a>
+
+    <a class="game" href="/trottinette-babylon/">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="15" cy="46" r="7" stroke="#efe6d6" stroke-width="3"/>
+          <circle cx="50" cy="46" r="7" stroke="#efe6d6" stroke-width="3"/>
+          <path d="M15 46l4-6h22" stroke="#bb464b" stroke-width="4"/>
+          <path d="M50 46L42 14" stroke="#efe6d6" stroke-width="3.5"/>
+          <path d="M36 14h12" stroke="#efe6d6" stroke-width="3.5"/>
+          <path d="M20 41h20" stroke="#55d7ff" stroke-width="1.5" opacity=".9"/>
+          <path d="M50 8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" fill="#ffd23a" stroke="none"/>
+        </svg>
+      </div>
+      <div>
+        <div class="name">Trottinette Babylon</div>
+        <div class="desc">La même balade, rendue avec le moteur Babylon.js : matériaux réalistes, ombres douces, reflets du ciel, halos lumineux. Plus lourde à charger.</div>
+        <span class="go">Jouer</span>
+        <div class="pub" data-repo="gab22222.github.io" data-path="trottinette-babylon"></div>
+      </div>
+    </a>
   </nav>
 
   <div class="sync">
@@ -134,7 +154,7 @@ document.querySelectorAll('a.game').forEach(a => a.addEventListener('click', e =
   location.href = a.getAttribute('href') + '?v=' + Date.now();
 }));
 // 2) le bouton recharge depuis le serveur l'accueil et les jeux, puis relance la page
-const PAGES = ['/', '/duel-arc/', '/trottinette/', '/manifest.webmanifest', '/icon.svg', '/apple-touch-icon.png'];
+const PAGES = ['/', '/duel-arc/', '/trottinette/', '/trottinette-babylon/', '/manifest.webmanifest', '/icon.svg', '/apple-touch-icon.png'];
 const btn = document.getElementById('sync'), note = document.getElementById('syncNote');
 btn.addEventListener('click', async () => {
   btn.disabled = true; btn.classList.add('busy'); note.textContent = 'Récupération de la dernière version…';
@@ -152,7 +172,7 @@ btn.addEventListener('click', async () => {
 const fmt = d => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) + ' à ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 document.querySelectorAll('.pub[data-repo]').forEach(async el => {
   try {
-    const r = await fetch('https://api.github.com/repos/gab22222/' + el.dataset.repo + '/commits?per_page=1', { cache: 'no-store' });
+    const r = await fetch('https://api.github.com/repos/gab22222/' + el.dataset.repo + '/commits?per_page=1' + (el.dataset.path ? '&path=' + el.dataset.path : ''), { cache: 'no-store' });
     if (!r.ok) return;
     const [c] = await r.json();
     if (c && c.commit) el.textContent = 'Dernière version : ' + fmt(new Date(c.commit.committer.date));
