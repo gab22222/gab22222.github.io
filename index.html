@@ -46,6 +46,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(38px,10vw,56px);li
 .sub{color:var(--mute);font-size:16px;line-height:1.4;margin:0}
 .games{display:grid;gap:12px;margin-top:6px}
 .game{display:grid;grid-template-columns:84px 1fr;gap:14px;align-items:center;padding:14px;border-radius:16px;border:1px solid var(--line);background:var(--sheet);color:inherit;text-decoration:none;transition:transform .12s,border-color .12s}
+.game[hidden]{display:none}
 a.game:hover,a.game:focus-visible{border-color:rgba(242,145,74,.55)}
 a.game:active{transform:scale(.985)}
 a.game:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
@@ -97,7 +98,8 @@ footer{color:var(--mute);font-size:13px;line-height:1.4;margin-top:6px}
       </div>
     </a>
 
-    <a class="game" href="/trottinette/">
+    <!-- Rider : caché de l'accueil (le jeu reste en ligne dans /trottinette/) ; pour le remettre, enlever « hidden » -->
+    <a class="game" href="/trottinette/" hidden>
       <div class="art" aria-hidden="true">
         <svg viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="14" cy="44" r="9" stroke="#efe6d6" stroke-width="3"/>
